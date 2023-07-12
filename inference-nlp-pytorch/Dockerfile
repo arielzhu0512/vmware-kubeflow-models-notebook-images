@@ -1,4 +1,4 @@
-FROM public.ecr.aws/j1r0q0g6/notebooks/notebook-servers/jupyter-pytorch-cuda:v1.5.0
+FROM public.ecr.aws/j1r0q0g6/notebooks/notebook-servers/jupyter-pytorch-cuda-full:v1.5.0
   
 USER root
 
@@ -17,23 +17,15 @@ RUN mkdir -p ${HOME} \
 RUN apt-get update
 RUN add-apt-repository ppa:deadsnakes/ppa
 RUN apt-get install python3.9 -y
-RUN python3.9
-RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.9 1
-RUN update-alternatives --set python3 /usr/bin/python3.9
-
-# Install notebook
-RUN pip install pip
-RUN pip install ipykernel notebook jupyterlab
-
-# install - requirements.txt
-COPY --chown=jovyan:users requirements.txt /tmp/requirements.txt
-RUN python3 -m pip install -r /tmp/requirements.txt --quiet --no-cache-dir \
- && rm -f /tmp/requirements.txt
+RUN \
+   echo 'alias python=/usr/bin/python3.9"' >> /root/.bashrc && \
+   echo 'alias python3=/usr/bin/python3.9"' >> /root/.bashrc && \
+   source /root/.bashrc
 
 # install packages
 RUN pip install transformers
 RUN pip install accelerate
-RUN pip install gradio
+RUN pip install deepspeed
 RUN pip install sentencepiece
 
 # add jupyter path into execute path
