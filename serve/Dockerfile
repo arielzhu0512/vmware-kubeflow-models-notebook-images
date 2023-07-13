@@ -1,6 +1,6 @@
-FROM pytorch/torchserve:latest-gpu
-
-USER root 
+FROM public.ecr.aws/j1r0q0g6/notebooks/notebook-servers/jupyter-pytorch-cuda-full:v1.5.0
+  
+USER root
 
 ENV NB_USER jovyan
 ENV NB_UID 1001
@@ -9,38 +9,31 @@ ENV HOME /home/$NB_USER
 ENV SHELL /bin/bash
 
 # create user and set required ownership
-RUN useradd -M -s /bin/bash -N -u ${NB_UID} ${NB_USER} \
- && mkdir -p ${HOME} \
+RUN mkdir -p ${HOME} \
  && chown -R ${NB_USER}:users ${HOME} \
  && chown -R ${NB_USER}:users /usr/local/bin
 
-# install git
-RUN apt-get update \
-&& apt-get install -y --no-install-recommends git
+# upgrade python
+RUN apt-get update
+RUN add-apt-repository ppa:deadsnakes/ppa
+RUN apt-get install python3.9 -y
+RUN \
+   echo 'alias python=/usr/bin/python3.9"' >> /root/.bashrc && \
+   echo 'alias python3=/usr/bin/python3.9"' >> /root/.bashrc && \
+   source /root/.bashrc
 
-# Install notebook
-RUN pip install pip
-RUN pip install ipykernel notebook jupyterlab
+# install java JDK 11
+RUN apt-get update
+RUN apt-get install --no-install-recommends -y openjdk-11-jre-headless
 
-# Install transformers and datasets
+# install extra packages for torchserve
+RUN pip install torchserve
+RUN pip install torch-model-archiver
+
+# install packages
+RUN pip install huggingface-hub
+RUN pip install boto3
 RUN pip install transformers
-
-# install wget
-RUN  apt-get update \
-  && apt-get install -y wget \
-  && rm -rf /var/lib/apt/lists/*
-
-# install curl
-RUN apt-get update 
-RUN apt-get install -y gcc
-RUN apt-get install -y curl
-
-
-# install kubectl
-RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
-RUN chmod +x ./kubectl
-RUN mv ./kubectl /usr/local/bin
-
 
 # add jupyter path into execute path
 ENV PATH="$PATH:~/.local/bin"
@@ -51,5 +44,3 @@ ENV SHELL=/bin/bash
 ENV NB_PREFIX /
 
 WORKDIR "${HOME}"
-
-CMD ["exec", "jupyter lab --notebook-dir=/home/jovyan --ip=0.0.0.0 --no-browser --allow-root --port=8888 --NotebookApp.token='' --NotebookApp.password='' --NotebookApp.allow_origin='*' --NotebookApp.base_url=${NB_PREFIX}"]

@@ -17,6 +17,7 @@ Images that are planned to be formally released are listed below.
 | ----- | ---------- | ---------------------------- | -------------- | --------- |
 | [projects.registry.vmware.com/models/notebook/inference:nlp-pytorch-v1](./inference-nlp-pytorch/Dockerfile) | `public.ecr.aws/j1r0q0g6/notebooks/notebook-servers/jupyter-pytorch-cuda-full:v1.5.0` | `python3.8`, `pip`, `kfp`, `kfp-server-api`, `kfserving`, `bokeh`, `cloudpickle`, `dill`, `ipympl`, `ipywidgets`, `jupyterlab-git`, `matplotlib`, `pandas`, `scikit-image`, `scikit-learn`, `scipy`, `seaborn`, `xgboost`, `fastai`, `torch`, `torchvision`, `torchaudio`, `bash`, `bzip2`, `locales`, `nano`, `unzip`, `vim`, `zip`, `ca-certificates`, `git`, `gnupg`, `gnupg2`, `lsb-release`, `software-properties-common`, `tzdata`, `git`, `curl`, `wget`, `kubectl`, `jupyterlab`, `notebook`, `ipykernel`, `numpy`, `requests` | `python3.9`, `transformers`, `accelerate`, `deepspeed`, `sentencepiece` | NLP model inference |
 | [projects.registry.vmware.com/models/notebook/inference:cv-pytorch-v1](./inference-cv-pytorch/Dockerfile) | `public.ecr.aws/j1r0q0g6/notebooks/notebook-servers/jupyter-pytorch-cuda-full:v1.5.0` | Same as above | `python3.9`, `accelerate`, `opencv-python-headless`, `diffusers` | CV model inference |
+| [projects.registry.vmware.com/models/notebook/serve:pytorch-cuda-v1](./serve/Dockerfile) | `public.ecr.aws/j1r0q0g6/notebooks/notebook-servers/jupyter-pytorch-cuda-full:v1.5.0` | Same as above | `python3.9`, `Java JDK 11`, `torchserve`, `torch-model-archiver`, `huggingface-hub`, `boto3`, `transformers` | Serve models (should be able to support both TorchServe and KServe) |
 
 ## How to use
 
@@ -28,14 +29,15 @@ In the notebook creation page, in "Docker Image" section, choose "Custom Image",
 
 ![notebook-custom](./img/notebook-custom.png)
 
-Note that in images `inference:nlp-pytorch-v1` and `inference:cv-pytorch-v1`, we installed Python 3.9 for you. And if you use these two images and would like to change the default version of Python, you can run following commands in your notebook server:
+Note that in images `inference:nlp-pytorch-v1` and `inference:cv-pytorch-v1`, we installed Python 3.9 for you. And if you use these images and would like to change the default version of Python, you can directly use Python 3.9 to execute your Python files using command:
 
 ```shell
 
-alias python=python3.9
-alias python3=python3.9
+python3.9 <your_python_file>
 
 ```
+
+Or set the default version using command following [this web page](http://web.mit.edu/6.00/www/handouts/pybuntu.html).
 
 And you can check the exiting Python versions in your notebook server using following command:
 
@@ -44,6 +46,8 @@ And you can check the exiting Python versions in your notebook server using foll
 ls /usr/bin/python**
 
 ```
+
+Also note that in image `serve:pytorch-cuda-v1`, we install Java JDK 11 for `torchserve`.
 
 ## Customize and build the images
 
