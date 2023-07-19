@@ -11,6 +11,8 @@
 
 ## Images
 
+**Contents of this section may not be up-to-date. Please refer to [this page](https://confluence.eng.vmware.com/display/VCP/VMware+Kubeflow+Notebook+Cutom+Images+for+LLM#VMwareKubeflowNotebookCutomImagesforLLM-Plannedtobeformallyreleased) for latest information.**
+
 Images that are planned to be formally released are listed below.
 
 | Image | Base Image | Already Have (in Base Image) | Extra Packages | Functions |
