@@ -23,10 +23,10 @@ RUN \
    source /root/.bashrc
 
 # install packages for tensorflow
-RUN pip install tensorflow_hub
+RUN pip install tensorflow_hub==0.14.0
 
 # install packages
-RUN pip install boto3
+RUN pip install boto3==1.28.10
 
 # add jupyter path into execute path
 ENV PATH="$PATH:~/.local/bin"

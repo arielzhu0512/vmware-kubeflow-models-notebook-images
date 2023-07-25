@@ -23,10 +23,10 @@ RUN \
    source /root/.bashrc
 
 # install packages
-RUN pip install transformers
-RUN pip install accelerate
-RUN pip install deepspeed
-RUN pip install sentencepiece
+RUN pip install transformers==4.31.0
+RUN pip install accelerate==0.20.3
+RUN pip install deepspeed==0.10.0
+RUN pip install sentencepiece==0.1.99
 
 # add jupyter path into execute path
 ENV PATH="$PATH:~/.local/bin"

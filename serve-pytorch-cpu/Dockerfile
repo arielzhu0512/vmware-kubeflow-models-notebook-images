@@ -27,13 +27,14 @@ RUN apt-get update
 RUN apt-get install --no-install-recommends -y openjdk-11-jre-headless
 
 # install extra packages for torchserve
-RUN pip install torchserve
-RUN pip install torch-model-archiver
+RUN pip install torchserve==0.8.1
+RUN pip install torch-model-archiver==0.8.1
 
 # install packages
-RUN pip install huggingface-hub
-RUN pip install boto3
-RUN pip install transformers
+RUN pip install huggingface-hub==0.16.4
+RUN pip install boto3==1.28.10
+RUN pip install transformers==4.31.0
+RUN pip install captum==0.6.0
 
 # add jupyter path into execute path
 ENV PATH="$PATH:~/.local/bin"

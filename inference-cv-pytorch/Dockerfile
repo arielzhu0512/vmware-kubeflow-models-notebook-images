@@ -23,9 +23,9 @@ RUN \
    source /root/.bashrc
 
 # install packages
-RUN pip install accelerate
-RUN pip install opencv-python-headless
-RUN pip install diffusers
+RUN pip install accelerate==0.20.3
+RUN pip install opencv-python-headless==4.8.0.74
+RUN pip install diffusers==0.18.2
 
 # add jupyter path into execute path
 ENV PATH="$PATH:~/.local/bin"
