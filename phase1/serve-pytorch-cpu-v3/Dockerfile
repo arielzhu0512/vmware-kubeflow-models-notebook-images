@@ -24,6 +24,10 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 RUN apt-get -yq update \
  && apt-get -yq install --no-install-recommends -y openjdk-11-jre-headless
 
+# install gcc command
+RUN apt-get -yq update \
+ && apt-get -yq install --no-install-recommends -y gcc
+
 # setup environment for conda
 ENV CONDA_DIR /opt/conda
 ENV PATH "${CONDA_DIR}/bin:${PATH}"
