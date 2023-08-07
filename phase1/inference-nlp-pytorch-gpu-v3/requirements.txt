@@ -6,7 +6,7 @@ torchaudio==0.13.1
 fastai==2.7.12
 
 # install kubeflow packages
-kfp==2.1.2
+kfp==2.0.1
 kfp-server-api==2.0.0
 kfserving==0.6.1
 

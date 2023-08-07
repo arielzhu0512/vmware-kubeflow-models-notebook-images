@@ -82,7 +82,7 @@ USER root
 RUN mkdir -p /tmp_home \
  && cp -r ${HOME} /tmp_home \
  && chown -R ${NB_USER}:users /tmp_home
-USER ${NB_UID}
+# USER ${NB_UID}
 
 EXPOSE 8888
 
